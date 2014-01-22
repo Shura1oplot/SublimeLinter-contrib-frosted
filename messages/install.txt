@@ -1,0 +1,10 @@
+SublimeLinter-contrib-frosted
+-------------------------------
+This linter plugin for SublimeLinter provides an interface to frosted.
+
+** IMPORTANT! **
+
+Before this plugin will activate, you *must*
+follow the installation instructions here:
+
+https://github.com/Shura1oplot/SublimeLinter-contrib-frosted
