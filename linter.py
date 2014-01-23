@@ -11,7 +11,7 @@
 """This module exports the Frosted plugin linter class."""
 
 from io import StringIO
-from SublimeLinter.lint import PythonLinter
+from SublimeLinter.lint import persist, PythonLinter
 
 
 class Frosted(PythonLinter):
@@ -30,7 +30,7 @@ class Frosted(PythonLinter):
             :
             (?P<line>\d+)
             :
-            (?P<offset>\d+)
+            (?P<col>\d+)
             :
             (?P<code>(?:(?P<error>E)|(?P<warning>[IW]))\d{3})
             :
@@ -44,7 +44,7 @@ class Frosted(PythonLinter):
                 (?P<syntax_error_line>\d+)
                 :
                 (?:
-                    (?P<syntax_error_offset>\d+)
+                    (?P<syntax_error_col>\d+)
                     :
                 )?
                 [ ]
@@ -67,8 +67,9 @@ class Frosted(PythonLinter):
         )
     """
     multiline = True
+    line_col_base = (1, 0)
     defaults = {
-        '--ignore=,': ''
+        '--ignore:': []
     }
     inline_overrides = ('ignore', )
     module = 'frosted.api'
@@ -76,6 +77,10 @@ class Frosted(PythonLinter):
 
     # Internal
     reporter = None
+
+    __transform_options = {
+        'ignore': 'ignore_frosted_errors'
+    }
 
     def split_match(self, match):
         match, line, col, error, warning, message, near = super().split_match(match)
@@ -88,15 +93,15 @@ class Frosted(PythonLinter):
         if groups.get('syntax_error'):
             error = True
             warning = False
-            line, offset, message = [
+            line, col, message = [
                 groups.get('syntax_error_{}'.format(key)) for key in
-                ('line', 'offset', 'message')
+                ('line', 'col', 'message')
             ]
 
             line = int(line) - self.line_col_base[0]
 
-            if offset:
-                col = int(offset)
+            if col:
+                col = int(col) - self.line_col_base[1]
             else:
                 col = 0
 
@@ -116,10 +121,25 @@ class Frosted(PythonLinter):
         """Run frosted.check on code and return the output."""
 
         output = StringIO()
-        reporter = self.get_reporter()
-        reporter = reporter(output, output)
+        Reporter = self.get_reporter()
 
-        self.module.check(code, filename, reporter=reporter, verbose=True)
+        options = {
+            'filename': filename,
+            'reporter': Reporter(output, output),
+            'verbose': True
+        }
+
+        type_map = {
+            'ignore': []
+        }
+
+        transform = lambda s: self.__transform_options.get(s, s.replace('-', '_'))
+        self.build_options(options, type_map, transform)
+
+        if persist.debug_mode():
+            persist.printf('{} options: {}'.format(self.name, options))
+
+        self.module.check(code, **options)
         return output.getvalue()
 
     def get_reporter(self):
