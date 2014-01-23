@@ -20,6 +20,9 @@ class Frosted(PythonLinter):
 
     syntax = 'python'
     cmd = ('frosted@python', '--verbose', '*', '-')
+    version_args = '--version'
+    version_re = r'(?P<version>\d+\.\d+\.\d+)'
+    version_requirement = '>=1.2.0'
     regex = r"""(?x)
         ^
         (?:
