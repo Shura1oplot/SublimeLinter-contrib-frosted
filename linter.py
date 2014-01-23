@@ -21,7 +21,7 @@ class Frosted(PythonLinter):
     syntax = 'python'
     cmd = ('frosted@python', '--verbose', '*', '-')
     version_args = '--version'
-    version_re = r'(?P<version>\d+\.\d+\.\d+)'
+    version_re = r'frosted (?P<version>\d+\.\d+\.\d+)'
     version_requirement = '>=1.2.0'
     regex = r"""(?x)
         ^
@@ -150,3 +150,15 @@ class Frosted(PythonLinter):
             self.__class__.reporter = Reporter
 
         return self.reporter
+
+    @classmethod
+    def get_executable_version(cls):
+        """Extract and return the string version of the linter executable."""
+
+        if cls.executable_path == "<builtin>":
+            from frosted import __version__ as version
+            persist.debug('{} version: {}'.format(cls.name, version))
+            return version
+
+        else:
+            return super(cls, cls).get_executable_version()
