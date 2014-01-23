@@ -20,6 +20,8 @@ Before installing this plugin, you must ensure that `frosted` is installed on yo
    [sudo] pip-3.x install frosted
    ```
 
+**Note:** This plugin requires `frosted` 1.2.0 or later.
+
 ### Linter configuration
 In order for `frosted` to be executed by SublimeLinter, you must ensure that its path is available to SublimeLinter. Before going any further, please read and follow the steps in [“Finding a linter executable”](http://sublimelinter.readthedocs.org/en/latest/troubleshooting.html#finding-a-linter-executable) through “Validating your PATH” in the documentation.
 
@@ -42,6 +44,7 @@ In addition to the standard SublimeLinter settings, SublimeLinter-frosted provid
 |Setting|Description|Inline Setting|Inline Override|
 |:------|:----------|:------------:|:-------------:|
 |@python|A meta setting that indicates the [python version](http://sublimelinter.readthedocs.org/en/latest/meta_settings.html#python) of your source files. Use this inline or at the global level, not within the linter’s settings.|&#10003;| |
+|ignore|A comma-separated list of error codes to ignore| |&#10003;|
 
 ## Contributing
 If you would like to contribute enhancements or fixes, please do the following:
