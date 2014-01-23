@@ -115,6 +115,10 @@ class Frosted(PythonLinter):
         if near:
             col = None
 
+        # there is no other way to disable capitalizing the first word
+        # \u200B - unicode  char 'ZERO WIDTH SPACE'
+        message = "\u200B" + message
+
         return match, line, col, error, warning, message, near
 
     def check(self, code, filename):
