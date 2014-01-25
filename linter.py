@@ -83,6 +83,8 @@ class Frosted(PythonLinter):
     }
 
     def split_match(self, match):
+        """Extract and return values from match."""
+
         match, line, col, error, warning, message, near = super().split_match(match)
 
         if not match:
