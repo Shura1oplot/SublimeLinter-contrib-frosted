@@ -104,15 +104,10 @@ class Frosted(PythonLinter):
 
             if col:
                 col = int(col) - self.line_col_base[1]
-            else:
-                col = 0
 
         elif groups.get('unexpected_error'):
             message = groups.get('unexpected_error_message')
-            line, col, error, warning, near = 0, 0, True, False, None
-
-        else:
-            col = int(groups.get('offset', 0))
+            line, col, error, warning, near = 0, None, True, False, None
 
         if near:
             col = None
