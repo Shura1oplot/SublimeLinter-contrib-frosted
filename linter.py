@@ -117,9 +117,9 @@ class Frosted(PythonLinter):
         if near:
             col = None
 
-        # there is no other way to disable capitalizing the first word
-        # \u200B - unicode  char 'ZERO WIDTH SPACE'
-        message = "\u200B" + message
+        if near and message.startswith(near):
+            # \u200B - unicode char 'ZERO WIDTH SPACE'
+            message = "\u200B" + message
 
         return match, line, col, error, warning, message, near
 
