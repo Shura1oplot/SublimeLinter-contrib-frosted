@@ -84,7 +84,6 @@ class Frosted(PythonLinter):
 
     def split_match(self, match):
         """Extract and return values from match."""
-
         match, line, col, error, warning, message, near = super().split_match(match)
 
         if not match:
@@ -116,7 +115,6 @@ class Frosted(PythonLinter):
 
     def check(self, code, filename):
         """Run frosted.check on code and return the output."""
-
         output = StringIO()
         Reporter = self.get_reporter()
 
@@ -141,7 +139,6 @@ class Frosted(PythonLinter):
 
     def get_reporter(self):
         """Return frosted.Reporter. Must be deferred to runtime."""
-
         if self.reporter is None:
             from frosted.reporter import Reporter
             self.__class__.reporter = Reporter
