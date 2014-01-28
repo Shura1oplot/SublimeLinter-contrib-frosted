@@ -112,10 +112,6 @@ class Frosted(PythonLinter):
         if near:
             col = None
 
-        if near and message.startswith(near):
-            # \u200B - unicode char 'ZERO WIDTH SPACE'
-            message = "\u200B" + message
-
         return match, line, col, error, warning, message, near
 
     def check(self, code, filename):
