@@ -22,7 +22,7 @@ class Frosted(PythonLinter):
     cmd = ('frosted@python', '--verbose', '*', '-')
     version_args = '--version'
     version_re = r'(?P<version>\d+\.\d+\.\d+)'
-    version_requirement = '>=1.2.0'
+    version_requirement = '>=1.3.0'
     regex = r"""(?x)
         ^
         (?:
@@ -34,39 +34,19 @@ class Frosted(PythonLinter):
             :
             (?P<code>(?:(?P<error>E)|(?P<warning>[IW]))\d{3})
             :
-            (?P<near>[^:\r\n]*)
+            (?P<near>[^:]*)
             :
-            (?P<message>[^\r\n]*)
-            |
-            (?P<syntax_error>
-                .+?  # filename
-                :
-                (?P<syntax_error_line>\d+)
-                :
-                (?:
-                    (?P<syntax_error_col>\d+)
-                    :
-                )?
-                [ ]
-                (?P<syntax_error_message>[^\r\n]*)
-                (?:
-                    \r?\n
-                    [^\r\n]*
-                    \r?\n
-                    [ ]*\^
-                    \r?\n
-                )?
-            )
+            (?P<message>.*)
             |
             (?P<unexpected_error>
                 .+?  # filename
                 :
                 [ ]
-                (?P<unexpected_error_message>[^\r\n]*)
+                (?P<unexpected_error_message>.*)
             )
         )
+        $
     """
-    multiline = True
     line_col_base = (1, 0)
     defaults = {
         '--ignore:': []
@@ -91,24 +71,14 @@ class Frosted(PythonLinter):
 
         groups = match.groupdict()
 
-        if groups.get('syntax_error'):
-            error = True
-            warning = False
-            line, col, message = [
-                groups.get('syntax_error_{}'.format(key)) for key in
-                ('line', 'col', 'message')
-            ]
-
-            line = int(line) - self.line_col_base[0]
-
-            if col:
-                col = int(col) - self.line_col_base[1]
-
-        elif groups.get('unexpected_error'):
+        if groups.get('unexpected_error'):
             message = groups.get('unexpected_error_message')
             line, col, error, warning, near = 0, None, True, False, None
 
-        if near:
+        elif groups.get('code') == 'E402':  # PythonSyntaxError
+            near = None
+
+        elif near:
             col = None
 
         return match, line, col, error, warning, message, near
