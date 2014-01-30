@@ -8,7 +8,7 @@
 # License: MIT
 #
 
-"""This module exports the Frosted plugin linter class."""
+"""This module exports the Frosted plugin class."""
 
 from io import StringIO
 from SublimeLinter.lint import persist, PythonLinter
@@ -16,13 +16,13 @@ from SublimeLinter.lint import persist, PythonLinter
 
 class Frosted(PythonLinter):
 
-    """Provides an interface to the frosted python module/script."""
+    """Provides an interface to frosted"""
 
     syntax = 'python'
     cmd = ('frosted@python', '--verbose', '*', '-')
     version_args = '--version'
     version_re = r'(?P<version>\d+\.\d+\.\d+)'
-    version_requirement = '>=1.3.2'
+    version_requirement = '>= 1.3.2'
     regex = r"""(?x)
         ^
         .+?  # filename
@@ -38,6 +38,7 @@ class Frosted(PythonLinter):
         (?P<message>.*)
         $
     """
+    multiline = False
     line_col_base = (1, 0)
     defaults = {
         '--ignore:': []
