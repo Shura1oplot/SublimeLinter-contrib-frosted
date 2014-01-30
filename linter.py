@@ -22,29 +22,20 @@ class Frosted(PythonLinter):
     cmd = ('frosted@python', '--verbose', '*', '-')
     version_args = '--version'
     version_re = r'(?P<version>\d+\.\d+\.\d+)'
-    version_requirement = '>=1.3.0'
+    version_requirement = '>=1.3.2'
     regex = r"""(?x)
         ^
-        (?:
-            .+?  # filename
-            :
-            (?P<line>\d+)
-            :
-            (?P<col>\d+)
-            :
-            (?P<code>(?:(?P<error>E)|(?P<warning>[IW]))\d{3})
-            :
-            (?P<near>[^:]*)
-            :
-            (?P<message>.*)
-            |
-            (?P<unexpected_error>
-                .+?  # filename
-                :
-                [ ]
-                (?P<unexpected_error_message>.*)
-            )
-        )
+        .+?  # filename
+        :
+        (?P<line>\d+)
+        :
+        (?P<col>\d+)
+        :
+        (?P<code>(?:(?P<error>E)|(?P<warning>[IW]))\d{3})
+        :
+        (?P<near>[^:]*)
+        :
+        (?P<message>.*)
         $
     """
     line_col_base = (1, 0)
@@ -66,19 +57,7 @@ class Frosted(PythonLinter):
         """Extract and return values from match."""
         match, line, col, error, warning, message, near = super().split_match(match)
 
-        if not match:
-            return match, line, col, error, warning, message, near
-
-        groups = match.groupdict()
-
-        if groups.get('unexpected_error'):
-            message = groups.get('unexpected_error_message')
-            line, col, error, warning, near = 0, None, True, False, None
-
-        elif groups.get('code') == 'E402':  # PythonSyntaxError
-            near = None
-
-        elif near:
+        if near:
             col = None
 
         return match, line, col, error, warning, message, near
