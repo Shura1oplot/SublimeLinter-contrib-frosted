@@ -1,8 +1,6 @@
 SublimeLinter-contrib-frosted
 =============================
 
-[![Build Status](https://khancdn.eu/badges.php?service=https%3A%2F%2Ftravis-ci.org%2FSublimeLinter%2FSublimeLinter-contrib-frosted.png%3Fbranch%3Dmaster)](https://travis-ci.org/SublimeLinter/SublimeLinter-contrib-frosted)
-
 This linter plugin for [SublimeLinter][docs] provides an interface to [frosted](https://github.com/timothycrosley/frosted). It will be used with files that have the “Python” syntax.
 
 ## Installation
