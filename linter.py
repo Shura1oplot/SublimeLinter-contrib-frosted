@@ -58,7 +58,9 @@ class Frosted(PythonLinter):
         """Extract and return values from match."""
         match, line, col, error, warning, message, near = super().split_match(match)
 
-        if near:
+        if not near:
+            near = None
+        else:
             col = None
 
         return match, line, col, error, warning, message, near
