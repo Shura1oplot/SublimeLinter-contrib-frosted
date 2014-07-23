@@ -7,7 +7,7 @@ This linter plugin for [SublimeLinter][docs] provides an interface to [frosted](
 SublimeLinter 3 must be installed in order to use this plugin. If SublimeLinter 3 is not installed, please follow the instructions [here][installation].
 
 ### Linter installation
-Before installing this plugin, you must ensure that `frosted` is installed on your system. To install `frosted`, do the following:
+Before using this plugin, you must ensure that `frosted` is installed on your system. To install `frosted`, do the following:
 
 1. Install [Python](http://python.org) and [pip](http://www.pip-installer.org/en/latest/installing.html). If you plan to code in Python 3, you will need to install `pip` for Python 3 as well.
 
@@ -39,7 +39,7 @@ To install via Package Control, do the following:
 ## Settings
 For general information on how SublimeLinter works with settings, please see [Settings][settings]. For information on generic linter settings, please see [Linter Settings][linter-settings].
 
-In addition to the standard SublimeLinter settings, SublimeLinter-contrib-frosted provides its own settings. Those marked as “Inline Setting” may also be [used inline][inline-settings].
+In addition to the standard SublimeLinter settings, SublimeLinter-contrib-frosted provides its own settings. Those marked as “Inline Setting” or “Inline Override” may also be [used inline][inline-settings].
 
 |Setting|Description|Inline Setting|Inline Override|
 |:------|:----------|:------------:|:-------------:|
